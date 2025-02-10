@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EACalc.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Label 
+                Text="Property Info"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1"
+                SemanticProperties.Description="This is for searching for property information based on parcel number."
+                VerticalTextAlignment="Center"
+                HorizontalTextAlignment="Center"
+                Margin="20"
+                TextDecorations="Underline"/>
+
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Text="Parcel Number:" Grid.Column="0" Grid.Row="0" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                <Entry x:Name="ParcelNumberEntry" Placeholder="Search by 10-digit Parcel Number" Grid.Column="2" Grid.Row="0" Margin="0,5,5,0"/>
+                <Button Text="Search" Grid.ColumnSpan="3" Grid.Row="1" Clicked="SearchButtonClicked" Padding="10" Margin="0,5,5,0" />
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="175" />
+                    <ColumnDefinition Width="1" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+
+                <Label Text="Built As Year Built:" Grid.Column="0" Grid.Row="1" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                <Entry x:Name="YearBuiltEntry" Placeholder="Enter Year Built" Grid.Column="2" Grid.Row="1" Margin="0,5,5,0"/>
+                <Label Text="Current Adjusted Year Built:" Grid.Column="0" Grid.Row="2" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Entry x:Name="AdjustedYearBuiltEntry" Placeholder="Current Adj Year Built" IsReadOnly="True" Grid.Column="2" Grid.Row="2" Margin="0,5,5,0"/>
+                <Label Text="Existing Square Footage Above Grade:" Grid.Column="0" Grid.Row="3" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Entry x:Name="SquareFootageEntry" Placeholder="Enter Square Footage" Grid.Column="2" Grid.Row="3" Margin="0,5,5,0"/>
+                <Label Text="New Square Footage Above Grade:" Grid.Column="0" Grid.Row="4" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Entry x:Name="NewSquareFootageEntry" Placeholder="Enter Square Footage" Grid.Column="2" Grid.Row="4" Margin="0,5,5,0"/>
+                <Label Text="Basement Square Footage:" Grid.Column="0" Grid.Row="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Entry x:Name="BasementSqFtEntry" Placeholder="Enter Square Footage" Grid.Column="2" Grid.Row="5" Margin="0,5,5,0"/>
+            </Grid>
+
+
+            <Label
+                Text="Renovation Levels"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1"
+                SemanticProperties.Description="this is for selecting various extents of property renovation." 
+                SemanticProperties.Hint="Exent to which a property has been renovated."
+                VerticalTextAlignment="Center"
+                HorizontalTextAlignment="Center"
+                TextDecorations="Underline"/>
+
+
+            <ScrollView>
+                <StackLayout Orientation="Vertical" Spacing="10">
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ImageButton 
+                            Source="info_icon.png" 
+                            Clicked="ShowKitchenRemodelInfo" 
+                            Grid.Column="2"
+                            HeightRequest="20"
+                            WidthRequest="20"
+                            HorizontalOptions="Start"/>
+                        <Label 
+                            Text="Total Kitchen Remodel"
+                            Style="{StaticResource SubHeadline}"
+                            SemanticProperties.HeadingLevel="Level2"
+                            Grid.Column="0"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Center"
+                            LineBreakMode="WordWrap" 
+                            MaxLines="2"
+                            HorizontalOptions="Start"/>
+                    </Grid>
+
+                        <RadioButton Content="None" GroupName="KitchenRemodel" />
+                        <RadioButton Content="Partial 15%" GroupName="KitchenRemodel" />
+                        <RadioButton Content="Full 25%" GroupName="KitchenRemodel" />
+                    <Editor 
+                        x:Name="KitchenRemodelCommentsEditor" 
+                        Placeholder="Comments: evidence/documentation, such as MLS # or building permit #" 
+                        HeightRequest="100"/>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ImageButton 
+                            Source="info_icon.png" 
+                            Clicked="ShowBathroomRemodelInfo" 
+                            Grid.Column="2"
+                            HeightRequest="20"
+                            WidthRequest="20"
+                            HorizontalOptions="Start"/>
+                        <Label 
+                            Text="Total Bath Remodel"
+                            Style="{StaticResource SubHeadline}"
+                            SemanticProperties.HeadingLevel="Level2"
+                            Grid.Column="0"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Center"
+                            LineBreakMode="WordWrap" 
+                            MaxLines="2"
+                            HorizontalOptions="Start"/>
+                    </Grid>
+
+
+                    <RadioButton Content="None" GroupName="BathRemodel" />
+                    <RadioButton Content="Partial 5%" GroupName="BathRemodel" />
+                    <RadioButton Content="Full 10%" GroupName="BathRemodel" />
+                    <Editor 
+                        x:Name="BathRemodelCommentsEditor"
+                        Placeholder="Comments: evidence/documentation, such as MLS # or building permit #" 
+                        HeightRequest="100" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ImageButton 
+                            Source="info_icon.png" 
+                            Clicked="ShowCosmeticRemodelInfo" 
+                            Grid.Column="2"
+                            HeightRequest="20"
+                            WidthRequest="20"
+                            HorizontalOptions="Start"/>
+                        <Label 
+                            Text="Cosmetic Remodel"
+                            Style="{StaticResource SubHeadline}"
+                            SemanticProperties.HeadingLevel="Level2"
+                            Grid.Column="0"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Center"
+                            LineBreakMode="WordWrap" 
+                            MaxLines="2"
+                            HorizontalOptions="Start"/>
+                    </Grid>
+
+                    <RadioButton Content="None" GroupName="CosmeticRemodel" />
+                    <RadioButton Content="Cosmetic 5%" GroupName="CosmeticRemodel" />
+                    <Editor 
+                        x:Name="CosmeticRemodelCommentsEditor"
+                        Placeholder="Comments: evidence/documentation, such as MLS # or building permit #" 
+                        HeightRequest="100" />
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ImageButton 
+                            Source="info_icon.png" 
+                            Clicked="ShowRoofRemodelInfo" 
+                            Grid.Column="2"
+                            HeightRequest="20"
+                            WidthRequest="20"
+                            HorizontalOptions="Start"/>
+                        <Label 
+                            Text="New Roof"
+                            Style="{StaticResource SubHeadline}"
+                            SemanticProperties.HeadingLevel="Level2"
+                            Grid.Column="0"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Center"
+                            LineBreakMode="WordWrap" 
+                            MaxLines="2"
+                            HorizontalOptions="Start"/>
+                    </Grid>
+
+                    <RadioButton Content="None" GroupName="NewRoof" />
+                    <RadioButton Content="New Roof 10%" GroupName="NewRoof" />
+                    <Editor 
+                        x:Name="NewRoofCommentsEditor"
+                        Placeholder="Comments: evidence/documentation, such as MLS # or building permit #" 
+                        HeightRequest="100" />
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ImageButton 
+                            Source="info_icon.png" 
+                            Clicked="ShowElectricalAndPlumbingRemodelInfo" 
+                            Grid.Column="2"
+                            HeightRequest="20"
+                            WidthRequest="20"
+                            HorizontalOptions="Start"/>
+                        <Label 
+                            Text="Full Electrical &amp; Plumbing Replacement"
+                            Style="{StaticResource SubHeadline}"
+                            SemanticProperties.HeadingLevel="Level2"
+                            Grid.Column="0" 
+                            HorizontalTextAlignment="Start" 
+                            VerticalTextAlignment="Center" 
+                            LineBreakMode="WordWrap" 
+                            MaxLines="3" 
+                            HorizontalOptions="Start"/>
+                            
+                    </Grid>
+
+                    <RadioButton Content="None" GroupName="ElectricalPlumbing" />
+                    <RadioButton Content="Full Electrical &amp; Plumbing 10%" GroupName="ElectricalPlumbing" />
+                    <Editor 
+                        x:Name="ElectricalPlumbingCommentsEditor"
+                        Placeholder="Comments: evidence/documentation, such as MLS # or building permit #" 
+                        HeightRequest="100" />
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="10" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ImageButton 
+                            Source="info_icon.png" 
+                            Clicked="ShowBasementRemodelInfo" 
+                            Grid.Column="2"
+                            HeightRequest="20"
+                            WidthRequest="20"
+                            HorizontalOptions="Start"/>
+                        <Label 
+                            Text="Basement Finish Remodel"
+                            Style="{StaticResource SubHeadline}"
+                            SemanticProperties.HeadingLevel="Level2"
+                            Grid.Column="0"
+                            HorizontalTextAlignment="Start" 
+                            VerticalTextAlignment="Center"
+                            LineBreakMode="WordWrap" 
+                            MaxLines="2"
+                            HorizontalOptions="Start"/>
+                    </Grid>
+
+                    <RadioButton Content="None" GroupName="BasementFinish" />
+                    <RadioButton Content="25%" GroupName="BasementFinish" />
+                    <RadioButton Content="50%" GroupName="BasementFinish" />
+                    <RadioButton Content="75%" GroupName="BasementFinish" />
+                    <RadioButton Content="100%" GroupName="BasementFinish" />
+                    <Editor 
+                        x:Name="BasementFinishCommentsEditor"
+                        Placeholder="Comments: evidence/documentation, such as MLS # or building permit #" 
+                        HeightRequest="100" />
+
+                </StackLayout>
+            </ScrollView>
+
+
+            <Button
+                x:Name="CounterBtn"
+                Text="Click me" 
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Fill" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+
+
+</ContentPage>
