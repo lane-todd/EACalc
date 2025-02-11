@@ -24,7 +24,6 @@ namespace EACalc
                                    "OK");
                 return;
             }
-
             // Validate parcel number (exactly 10 digits and only digits)
             if (!Regex.IsMatch(parcelNumber, @"^\d{10}$"))
             {
@@ -36,8 +35,11 @@ namespace EACalc
             // Sanitize the parcel number for SQL injection prevention
             parcelNumber = $"'{parcelNumber}'";
 
-            // Store the sanitized parcel number (e.g., in a local variable or a data store)
-            // ... (your logic to store the sanitized parcel number) ...
+
+
+
+
+
 
             // Example: Display the sanitized parcel number (for demonstration)
             await DisplayAlert("Parcel Number", $"Sanitized Parcel Number: {parcelNumber}", "OK");
