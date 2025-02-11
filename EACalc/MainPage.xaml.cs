@@ -35,15 +35,57 @@ namespace EACalc
             // Sanitize the parcel number for SQL injection prevention
             parcelNumber = $"'{parcelNumber}'";
 
+            string sqlQuery = "WITH RankedParcels AS(" +
+                " SELECT CUSTOM.VlcResParcels.IMPNO AS IMPNO1, CUSTOM.VlcResParcels.YRBLT," +
+                " CUSTOM.VlcResParcels.ADJYRBLT, CUSTOM.VlcResParcels.SF AS SF1," +
+                " CUSTOM.VlcResParcels.BSMNTSF, CUSTOM.VlcResParcels.PARCELNO," +
+                " ROW_NUMBER() OVER (PARTITION BY CUSTOM.VlcResParcels.IMPNO ORDER BY CUSTOM.VlcResParcels.IMPNO ASC) AS rn" +
+                " FROM CUSTOM.VlcResParcels" +
+                " WHERE CUSTOM.VlcResParcels.PARCELNO = ?";
 
+            string connectionString = "DSN=asrall;Description=asrall;DATABASE=ASR;UID=asrall;PWD=asrall;";
 
+            try
+            {
+                using (var connection = new OdbcConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+                    using (var command = new OdbcCommand(sqlQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@ParcelNumber", parcelNumber);
 
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                // Access and process data from the reader
+                                string someData = reader.GetString(0);
+                                // ... (process other data from the reader) ...
 
-
-
-            // Example: Display the sanitized parcel number (for demonstration)
-            await DisplayAlert("Parcel Number", $"Sanitized Parcel Number: {parcelNumber}", "OK");
+                                // Display or use the retrieved data 
+                                await DisplayAlert("Result", someData, "OK");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (OdbcException ex)
+            {
+                await DisplayAlert("Error", $"OdbcException: {ex.Message}", "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+            }
         }
+        
+
+
+
+
+        // Example: Display the sanitized parcel number (for demonstration)
+        //await DisplayAlert("Parcel Number", $"Sanitized Parcel Number: {parcelNumber}", "OK");
+        //}
 
         private async void ShowKitchenRemodelInfo(object sender, EventArgs e)
         {
