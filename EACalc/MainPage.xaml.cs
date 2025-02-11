@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.Data.Odbc;
+using System.Data;
 namespace EACalc
 
 {
@@ -22,6 +23,7 @@ namespace EACalc
                 await DisplayAlert("Error",
                                    "Please enter a Parcel Number.",
                                    "OK");
+                ParcelNumberEntry.Text = "";
                 return;
             }
             // Validate parcel number (exactly 10 digits and only digits)
@@ -29,42 +31,51 @@ namespace EACalc
             {
                 // Display an error message (e.g., using a message dialog)
                 await DisplayAlert("Error", "Invalid Parcel Number. Please enter a 10-digit number.", "OK");
+                ParcelNumberEntry.Text = "";
                 return;
             }
 
             // Sanitize the parcel number for SQL injection prevention
-            parcelNumber = $"'{parcelNumber}'";
-
-            string sqlQuery = "WITH RankedParcels AS(" +
-                " SELECT CUSTOM.VlcResParcels.IMPNO AS IMPNO1, CUSTOM.VlcResParcels.YRBLT," +
-                " CUSTOM.VlcResParcels.ADJYRBLT, CUSTOM.VlcResParcels.SF AS SF1," +
-                " CUSTOM.VlcResParcels.BSMNTSF, CUSTOM.VlcResParcels.PARCELNO," +
-                " ROW_NUMBER() OVER (PARTITION BY CUSTOM.VlcResParcels.IMPNO ORDER BY CUSTOM.VlcResParcels.IMPNO ASC) AS rn" +
-                " FROM CUSTOM.VlcResParcels" +
-                " WHERE CUSTOM.VlcResParcels.PARCELNO = ?";
+            parcelNumber = $"{parcelNumber}";
 
             string connectionString = "DSN=asrall;Description=asrall;DATABASE=ASR;UID=asrall;PWD=asrall;";
+
+            string sqlQuery = @"
+                    WITH RankedParcels AS (
+                        SELECT 
+                            CUSTOM.VlcResParcels.IMPNO AS IMPNO1, 
+                            CUSTOM.VlcResParcels.YRBLT,
+                            CUSTOM.VlcResParcels.ADJYRBLT, 
+                            CUSTOM.VlcResParcels.SF AS SF1,
+                            CUSTOM.VlcResParcels.BSMNTSF, 
+                            CUSTOM.VlcResParcels.PARCELNO,
+                            ROW_NUMBER() OVER (PARTITION BY CUSTOM.VlcResParcels.IMPNO ORDER BY CUSTOM.VlcResParcels.IMPNO ASC) AS rn
+                        FROM 
+                            CUSTOM.VlcResParcels
+                        WHERE 
+                            CUSTOM.VlcResParcels.PARCELNO = @ParcelNumber
+                    )
+                    SELECT IMPNO1, YRBLT, ADJYRBLT, SF1, BSMNTSF, PARCELNO
+                    FROM RankedParcels
+                    WHERE rn = 1";
 
             try
             {
                 using (var connection = new OdbcConnection(connectionString))
                 {
-                    await connection.OpenAsync();
+                    //await connection.OpenAsync();
                     using (var command = new OdbcCommand(sqlQuery, connection))
                     {
                         command.Parameters.AddWithValue("@ParcelNumber", parcelNumber);
 
+                        // Display the constructed SQL query for debugging
+                        string fullQuery = command.CommandText;
+                        fullQuery = fullQuery.Replace("@ParcelNumber", "'" + parcelNumber + "'"); // Replace the placeholder with the actual value
+                        await DisplayAlert("SQL Query", fullQuery, "OK");
+
                         using (var reader = await command.ExecuteReaderAsync())
                         {
-                            while (await reader.ReadAsync())
-                            {
-                                // Access and process data from the reader
-                                string someData = reader.GetString(0);
-                                // ... (process other data from the reader) ...
-
-                                // Display or use the retrieved data 
-                                await DisplayAlert("Result", someData, "OK");
-                            }
+                            // ... (rest of your code) ...
                         }
                     }
                 }
@@ -77,15 +88,19 @@ namespace EACalc
             {
                 await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
             }
-        }
         
-
-
-
-
         // Example: Display the sanitized parcel number (for demonstration)
-        //await DisplayAlert("Parcel Number", $"Sanitized Parcel Number: {parcelNumber}", "OK");
-        //}
+        await DisplayAlert("Parcel Number", $"Sanitized Parcel Number: {parcelNumber}", "OK");
+        }
+
+
+
+
+
+
+
+
+
 
         private async void ShowKitchenRemodelInfo(object sender, EventArgs e)
         {
