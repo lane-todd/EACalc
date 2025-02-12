@@ -80,10 +80,10 @@ namespace EACalc
                                 int sf1Index = reader.GetOrdinal("SF1");
                                 int bsmntsfIndex = reader.GetOrdinal("BSMNTSF");
                                 // set values, check if null. if null, default to 0
-                                string yrblt = reader.IsDBNull(yrbltIndex) ? "0" : reader.GetString(yrbltIndex);
-                                string adjyrblt = reader.IsDBNull(adjyrbltIndex) ? "0" : reader.GetString(adjyrbltIndex);
-                                string sf1 = reader.IsDBNull(sf1Index) ? "0" : reader.GetString(sf1Index);
-                                string bsmntsf = reader.IsDBNull(bsmntsfIndex) ? "0" : reader.GetString(bsmntsfIndex);
+                                int yrblt = reader.IsDBNull(yrbltIndex) ? 0 : (int)reader.GetValue(yrbltIndex);
+                                int adjyrblt = reader.IsDBNull(adjyrbltIndex) ? 0 : (int)reader.GetValue(adjyrbltIndex);
+                                decimal sf1 = reader.IsDBNull(sf1Index) ? 0 : (decimal)reader.GetValue(sf1Index);
+                                decimal bsmntsf = reader.IsDBNull(bsmntsfIndex) ? 0 : (decimal)reader.GetValue(bsmntsfIndex);
 
                                 YearBuiltEntry.Text = yrblt;
                                 AdjustedYearBuiltEntry.Text = adjyrblt;
