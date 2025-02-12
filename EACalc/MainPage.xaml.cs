@@ -21,7 +21,7 @@ namespace EACalc
             {
                 // Display an error message (e.g., using a message dialog)
                 await DisplayAlert("Error",
-                                   "Please enter a Parcel Number.",
+                                   "Please enter a 10-digit Parcel Number.",
                                    "OK");
                 ParcelNumberEntry.Text = "";
                 return;
@@ -59,23 +59,47 @@ namespace EACalc
                     FROM RankedParcels
                     WHERE rn = 1";
 
+            string fullQuery = sqlQuery.Replace("@ParcelNumber", "'" + parcelNumber + "'"); // Replace the placeholder with the actual value
+
             try
             {
                 using (var connection = new OdbcConnection(connectionString))
                 {
-                    //await connection.OpenAsync();
-                    using (var command = new OdbcCommand(sqlQuery, connection))
+                    await connection.OpenAsync();
+                    using (var command = new OdbcCommand(fullQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@ParcelNumber", parcelNumber);
-
-                        // Display the constructed SQL query for debugging
-                        string fullQuery = command.CommandText;
-                        fullQuery = fullQuery.Replace("@ParcelNumber", "'" + parcelNumber + "'"); // Replace the placeholder with the actual value
-                        await DisplayAlert("SQL Query", fullQuery, "OK");
+                        // await DisplayAlert("SQL Query", fullQuery, "OK");
 
                         using (var reader = await command.ExecuteReaderAsync())
                         {
-                            // ... (rest of your code) ...
+                            if (await reader.ReadAsync())
+                            {
+                                // Get column ordinals 
+                                int yrbltIndex = reader.GetOrdinal("YRBLT");
+                                int adjyrbltIndex = reader.GetOrdinal("ADJYRBLT");
+                                int sf1Index = reader.GetOrdinal("SF1");
+                                int bsmntsfIndex = reader.GetOrdinal("BSMNTSF");
+                                // set values, check if null. if null, default to 0
+                                string yrblt = reader.IsDBNull(yrbltIndex) ? "0" : reader.GetString(yrbltIndex);
+                                string adjyrblt = reader.IsDBNull(adjyrbltIndex) ? "0" : reader.GetString(adjyrbltIndex);
+                                string sf1 = reader.IsDBNull(sf1Index) ? "0" : reader.GetString(sf1Index);
+                                string bsmntsf = reader.IsDBNull(bsmntsfIndex) ? "0" : reader.GetString(bsmntsfIndex);
+
+                                YearBuiltEntry.Text = yrblt;
+                                AdjustedYearBuiltEntry.Text = adjyrblt;
+                                SquareFootageEntry.Text = sf1;
+                                BasementSqFtEntry.Text = bsmntsf;
+                            }
+                            else
+                            {
+                                await DisplayAlert("Information", "No data found for the given Parcel Number.", "OK");
+                                // Clear existing entry fields (optional)
+                                YearBuiltEntry.Text = string.Empty;
+                                AdjustedYearBuiltEntry.Text = string.Empty;
+                                SquareFootageEntry.Text = string.Empty;
+                                NewSquareFootageEntry.Text = string.Empty;
+                                BasementSqFtEntry.Text = string.Empty;
+                            }
                         }
                     }
                 }
@@ -136,6 +160,12 @@ namespace EACalc
         {
             await DisplayAlert("Basement Finish Remodel Info",
                                "Basement finish remodels are an approximation of how much basement squarefootage becomes finished, liveable space as the result of renovations - expressed as a percentage of total basement squarefootage.",
+                               "OK");
+        }
+        private async void ShowNewSquareFootageInfo(object sender, EventArgs e)
+        {
+            await DisplayAlert("New Square Footage Info",
+                               "Additional square footage being added on to an existing improvement in the form of an addition. If no additions are being built, value defaults to 0 sqft.",
                                "OK");
         }
 

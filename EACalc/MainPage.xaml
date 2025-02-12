@@ -37,7 +37,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="175" />
-                    <ColumnDefinition Width="1" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -56,10 +56,21 @@
                 <Entry x:Name="AdjustedYearBuiltEntry" Placeholder="Current Adj Year Built" IsReadOnly="True" Grid.Column="2" Grid.Row="2" Margin="0,5,5,0"/>
                 <Label Text="Existing Square Footage Above Grade:" Grid.Column="0" Grid.Row="3" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
                 <Entry x:Name="SquareFootageEntry" Placeholder="Enter Square Footage" Grid.Column="2" Grid.Row="3" Margin="0,5,5,0"/>
-                <Label Text="New Square Footage Above Grade:" Grid.Column="0" Grid.Row="4" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                <Entry x:Name="NewSquareFootageEntry" Placeholder="Enter Square Footage" Grid.Column="2" Grid.Row="4" Margin="0,5,5,0"/>
-                <Label Text="Basement Square Footage:" Grid.Column="0" Grid.Row="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
-                <Entry x:Name="BasementSqFtEntry" Placeholder="Enter Square Footage" Grid.Column="2" Grid.Row="5" Margin="0,5,5,0"/>
+                <Label Text="Basement Square Footage:" Grid.Column="0" Grid.Row="4" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Entry x:Name="BasementSqFtEntry" Placeholder="Enter Square Footage" Grid.Column="2" Grid.Row="4" Margin="0,5,5,0"/>
+                <Label Text="New Square Footage Above Grade:" Grid.Column="0" Grid.Row="5" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <ImageButton 
+                            Source="info_icon.png" 
+                            Clicked="ShowNewSquareFootageInfo" 
+                            Grid.Column="1"
+                            Grid.Row="5"
+                            HeightRequest="20"
+                            WidthRequest="20"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                            Margin="0,5,5,0"
+                            />
+                <Entry x:Name="NewSquareFootageEntry" Placeholder="Enter Square Footage" Grid.Column="2" Grid.Row="5" Margin="0,5,5,0"/>
             </Grid>
 
 
