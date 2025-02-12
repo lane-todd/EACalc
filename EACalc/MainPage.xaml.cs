@@ -105,6 +105,7 @@ namespace EACalc
                                 SquareFootageEntry.Text = string.Empty;
                                 NewSquareFootageEntry.Text = string.Empty;
                                 BasementSqFtEntry.Text = string.Empty;
+                                ParcelNumberEntry.Text = string.Empty;
                             }
                         }
                     }
