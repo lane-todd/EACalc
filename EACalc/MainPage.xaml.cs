@@ -79,16 +79,22 @@ namespace EACalc
                                 int adjyrbltIndex = reader.GetOrdinal("ADJYRBLT");
                                 int sf1Index = reader.GetOrdinal("SF1");
                                 int bsmntsfIndex = reader.GetOrdinal("BSMNTSF");
-                                // set values, check if null. if null, default to 0
-                                int yrblt = reader.IsDBNull(yrbltIndex) ? 0 : (int)reader.GetValue(yrbltIndex);
-                                int adjyrblt = reader.IsDBNull(adjyrbltIndex) ? 0 : (int)reader.GetValue(adjyrbltIndex);
-                                decimal sf1 = reader.IsDBNull(sf1Index) ? 0 : (decimal)reader.GetValue(sf1Index);
-                                decimal bsmntsf = reader.IsDBNull(bsmntsfIndex) ? 0 : (decimal)reader.GetValue(bsmntsfIndex);
+                                int parcelIndex = reader.GetOrdinal("PARCELNO");
 
-                                YearBuiltEntry.Text = yrblt;
-                                AdjustedYearBuiltEntry.Text = adjyrblt;
-                                SquareFootageEntry.Text = sf1;
-                                BasementSqFtEntry.Text = bsmntsf;
+                                // set values, check if null. if null, default to 0
+                                decimal yrblt = reader.IsDBNull(yrbltIndex) ? 0 : reader.GetDecimal(yrbltIndex);
+                                yrblt = Convert.ToInt32(yrblt);
+                                decimal adjyrblt = reader.IsDBNull(adjyrbltIndex) ? 0 : reader.GetDecimal(adjyrbltIndex);
+                                adjyrblt = Convert.ToInt32(adjyrblt);
+                                decimal sf1 = reader.IsDBNull(sf1Index) ? 0 : reader.GetDecimal(sf1Index);
+                                sf1 = Convert.ToInt32(sf1);
+                                decimal bsmntsf = reader.IsDBNull(bsmntsfIndex) ? 0 : reader.GetDecimal(bsmntsfIndex);
+                                bsmntsf = Convert.ToInt32(bsmntsf);
+
+                                YearBuiltEntry.Text = yrblt.ToString();
+                                AdjustedYearBuiltEntry.Text = adjyrblt.ToString();
+                                SquareFootageEntry.Text = sf1.ToString();
+                                BasementSqFtEntry.Text = bsmntsf.ToString();
                             }
                             else
                             {
